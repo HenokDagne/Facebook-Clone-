@@ -92,7 +92,7 @@ try {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              "Face book",
+              "Facebook",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.blue[800],
