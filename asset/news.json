@@ -1,0 +1,144 @@
+{
+  "news": [
+    {
+      "category": "World",
+      "title": "Ukraine struggling to keep lights on under Russian attack",
+      "user": {
+        "username": "newsreporter1",
+        "name": "Alex Johnson",
+        "email": "alex.j@news.com",
+        "avatar_url": "https://example.com/avatars/alex.jpg"
+      },
+      "image_url": "https://example.com/images/ukraine-energy.jpg",
+      "content": "Ukraine's power infrastructure faces severe challenges as Russian missile strikes continue to target energy facilities across the country. In the latest wave of attacks, over 70 energy sites have been hit, leaving millions without electricity during freezing winter temperatures. Emergency power cuts are now routine in major cities including Kyiv and Kharkiv.\n\nUkrainian energy minister Herman Halushchenko reported that repair crews work around the clock, but the scale of destruction makes full restoration impossible under ongoing bombardment. International aid organizations have delivered emergency generators, but distribution remains hampered by damaged roads and ongoing fighting. The crisis has forced schools and hospitals to operate on limited backup power.",
+      "publish_date": "2025-12-16T14:30:00Z",
+      "author": "Alex Johnson"
+    },
+    {
+      "category": "World",
+      "title": "Australia mass shooting at Bondi Beach leaves 15 dead",
+      "user": {
+        "username": "sydneynews",
+        "name": "Sarah Lee",
+        "email": "sarah@sydneynews.au",
+        "avatar_url": "https://example.com/avatars/sarah.jpg"
+      },
+      "image_url": "https://example.com/images/bondi-shooting.jpg",
+      "content": "A gunman opened fire on Sydney's iconic Bondi Beach during peak holiday season, killing 15 people and injuring dozens more in what authorities call Australia's deadliest mass shooting in decades. The attack occurred during a crowded Boxing Day celebration, turning the popular tourist destination into a scene of chaos and tragedy.\n\nPolice have identified the shooter as a 34-year-old local man with no prior criminal record. Eyewitnesses described scenes of panic as thousands fled the beachfront area. Australia's Prime Minister called the incident a 'national tragedy' and promised a full investigation into how the firearm was obtained despite strict gun laws.",
+      "publish_date": "2025-12-16T12:15:00Z",
+      "author": "Sarah Lee"
+    },
+    {
+      "category": "World",
+      "title": "Zelenskyy reports progress in Ukraine peace talks",
+      "user": {
+        "username": "diplomatwatch",
+        "name": "Maria Petrova",
+        "email": "maria@diplo.com",
+        "avatar_url": "https://example.com/avatars/maria.jpg"
+      },
+      "image_url": "https://example.com/images/ukraine-peace.jpg",
+      "content": "Ukrainian President Volodymyr Zelenskyy announced 'concrete progress' in peace negotiations during a surprise visit to Istanbul. The talks, mediated by Turkey, mark the first direct high-level contact between Ukrainian and Russian officials in months. Key discussion points included prisoner exchanges and establishing humanitarian corridors.\n\nWhile both sides remain cautious, Zelenskyy described the meeting as 'constructive' and scheduled follow-up talks for next week. Western allies expressed guarded optimism but emphasized that any agreement must include full Russian troop withdrawal and security guarantees for Ukraine.",
+      "publish_date": "2025-12-16T16:45:00Z",
+      "author": "Maria Petrova"
+    },
+    {
+      "category": "World",
+      "title": "Sudan tops global humanitarian crisis watchlist",
+      "user": {
+        "username": "aidreporter",
+        "name": "Jamal Ahmed",
+        "email": "jamal@aidnews.org",
+        "avatar_url": "https://example.com/avatars/jamal.jpg"
+      },
+      "image_url": "https://example.com/images/sudan-crisis.jpg",
+      "content": "The United Nations has named Sudan the world's most severe humanitarian crisis, surpassing Gaza and Ukraine. Over 25 million people - half the population - face acute food insecurity after 20 months of civil war between rival military factions. Famine has been declared in parts of North Darfur province.\n\nAid agencies report that blocked roads and ongoing fighting prevent food deliveries to desperate communities. The World Food Programme warns that without immediate ceasefire and access, millions face starvation death in coming months. International donors have pledged $3 billion but delivery remains critically hampered.",
+      "publish_date": "2025-12-16T10:20:00Z",
+      "author": "Jamal Ahmed"
+    },
+    {
+      "category": "World",
+      "title": "Conservative Kast wins Chile election",
+      "user": {
+        "username": "latinamerica",
+        "name": "Carlos Ruiz",
+        "email": "carlos@latinnews.com",
+        "avatar_url": "https://example.com/avatars/carlos.jpg"
+      },
+      "image_url": "https://example.com/images/chile-election.jpg",
+      "content": "Jose Antonio Kast's conservative Republican Party secured a stunning victory in Chile's presidential election, defeating leftist candidate Gabriel Boric. The win signals a sharp rightward shift in Latin America's most stable democracy, driven by voter frustration over crime rates and immigration.\n\nKast campaigned on strict law-and-order policies and opposition to 'gender ideology' in schools. His victory follows similar conservative gains across the region, challenging the left's dominance established during the pandemic. Markets reacted positively, with Chile's peso strengthening 3% against the dollar.",
+      "publish_date": "2025-12-16T18:10:00Z",
+      "author": "Carlos Ruiz"
+    },
+    {
+      "category": "Technology",
+      "title": "Motorola unveils ultra-thin Edge 70 in India",
+      "user": {
+        "username": "techguru",
+        "name": "Priya Singh",
+        "email": "priya@techindia.in",
+        "avatar_url": "https://example.com/avatars/priya.jpg"
+      },
+      "image_url": "https://example.com/images/motorola-edge70.jpg",
+      "content": "Motorola launched its slimmest smartphone ever, the Edge 70, targeting India's competitive mid-range market. At just 6.5mm thick, the device features a 6.7-inch pOLED display, Snapdragon 7 Gen 3 processor, and 50MP camera system with AI-enhanced imaging. Priced at ₹32,999, it undercuts Samsung and OnePlus rivals.\n\nKey highlights include Moto AI features like Magic Canvas for image generation and 68W TurboPower charging. Motorola claims the phone maintains full 5G capability despite its ultra-thin design through innovative cooling technology. Available starting December 20 across Flipkart and major retail chains.",
+      "publish_date": "2025-12-16T13:25:00Z",
+      "author": "Priya Singh"
+    },
+    {
+      "category": "Technology",
+      "title": "Nvidia launches Nemotron 3 AI model",
+      "user": {
+        "username": "aiwatch",
+        "name": "David Kim",
+        "email": "david@aihub.net",
+        "avatar_url": "https://example.com/avatars/david.jpg"
+      },
+      "image_url": "https://example.com/images/nvidia-nemotron.jpg",
+      "content": "Nvidia unveiled Nemotron 3, its most advanced open-source AI model claiming to rival GPT-4 performance at one-tenth the inference cost. The 70-billion parameter model excels in reasoning, coding, and multilingual capabilities, running efficiently on Nvidia's H100 GPUs. Available immediately via Hugging Face.\n\nUnlike closed competitors, Nemotron 3 includes full training data transparency and fine-tuning weights. Nvidia positions it for enterprise adoption in finance, healthcare, and software development. Early benchmarks show 15% better performance than Llama 3.1 405B on complex reasoning tasks.",
+      "publish_date": "2025-12-16T15:50:00Z",
+      "author": "David Kim"
+    },
+    {
+      "category": "Technology",
+      "title": "Ford kills all-electric F-150 project",
+      "user": {
+        "username": "evnews",
+        "name": "Emily Chen",
+        "email": "emily@evdaily.com",
+        "avatar_url": "https://example.com/avatars/emily.jpg"
+      },
+      "image_url": "https://example.com/images/ford-f150-ev.jpg",
+      "content": "Ford Motor Company has canceled development of a full-size electric F-150 Lightning successor, citing poor sales and insufficient charging infrastructure. The decision follows $19.5 billion in EV-related write-downs this year. Ford will focus instead on hybrid powertrains for its truck lineup.\n\nF-150 Lightning sales dropped 70% year-over-year amid consumer preference for hybrids and gas trucks. Industry analysts note that Tesla's Cybertruck also struggles with demand. Ford CEO Jim Farley stated traditional trucks remain America's best-selling vehicle for good reason.",
+      "publish_date": "2025-12-16T11:40:00Z",
+      "author": "Emily Chen"
+    },
+    {
+      "category": "Business",
+      "title": "Kraft Heinz names new CEO Steve Cahillane",
+      "user": {
+        "username": "bizinsider",
+        "name": "Robert Kline",
+        "email": "robert@biznews.com",
+        "avatar_url": "https://example.com/avatars/robert.jpg"
+      },
+      "image_url": "https://example.com/images/kraft-ceo.jpg",
+      "content": "Kraft Heinz appointed Steve Cahillane as CEO, promoting the former PepsiCo executive to lead the $45 billion food giant. Cahillane replaces Miguel Patricio amid pressure from activist investors 3G Capital demanding faster growth. Shares rose 4% on the announcement.\n\nCahillane's track record includes doubling Monster Beverage's revenue during his tenure. Analysts expect him to accelerate Kraft Heinz's portfolio transformation, emphasizing premium brands over commodity products. The company faces declining ketchup sales but strong growth in Philadelphia cream cheese.",
+      "publish_date": "2025-12-16T09:30:00Z",
+      "author": "Robert Kline"
+    },
+    {
+      "category": "Business",
+      "title": "US business activity hits 6-month low",
+      "user": {
+        "username": "econupdate",
+        "name": "Lisa Wong",
+        "email": "lisa@economy.net",
+        "avatar_url": "https://example.com/avatars/lisa.jpg"
+      },
+      "image_url": "https://example.com/images/us-economy.jpg",
+      "content": "US business activity contracted for the first time in six months as S&P Global's PMI fell to 49.3, signaling economic slowdown. Manufacturing output dropped sharply while services growth stalled amid declining new orders. Economists now predict 1.8% GDP growth for Q4.\n\nRising input costs and falling client demand pressured profit margins across sectors. Companies reported hiring freezes and inventory reductions. Federal Reserve officials noted the data supports their cautious approach to interest rate cuts amid persistent inflation above target.",
+      "publish_date": "2025-12-16T17:05:00Z",
+      "author": "Lisa Wong"
+    }
+  ]
+}

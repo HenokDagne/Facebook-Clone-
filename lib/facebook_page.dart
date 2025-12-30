@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'stories_page.dart';
 import 'main_feed.dart';
+import 'login_page.dart';
 
 class FacebookPage extends StatelessWidget {
   const FacebookPage({super.key});
@@ -10,14 +11,16 @@ class FacebookPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'facebook',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 31, 101, 230),
-          ),
+        backgroundColor: Colors.white,
+        elevation: 1,
+        iconTheme: const IconThemeData(color: Colors.blueGrey),
+        toolbarTextStyle: const TextStyle(color: Colors.blueGrey),
+        titleTextStyle: const TextStyle(
+          color: Color.fromARGB(255, 31, 101, 230),
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
         ),
+        title: const Text('facebook'),
         //actions: <>{},
         actions: <Widget>[
           IconButton(
@@ -33,6 +36,16 @@ class FacebookPage extends StatelessWidget {
               // Add your action here
               print("Menu pressed");
             },
+
+          ),
+          IconButton(
+            icon: const Icon(Icons.login, size: 32), // use Icon() widget
+            onPressed: () {
+              // Add your action here
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()));
+            },
+            
           ),
         ],
       ),
