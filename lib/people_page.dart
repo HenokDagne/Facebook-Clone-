@@ -101,6 +101,10 @@ class _PeoplePageState extends State<PeoplePage> {
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Color(0xFF1877F2),
                                     foregroundColor: Colors.white,
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 8,
+                                      horizontal: 8,
+                                    ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(6),
                                     ),
@@ -115,7 +119,14 @@ class _PeoplePageState extends State<PeoplePage> {
                                             addedFriends.add(index);
                                           });
                                         },
-                                  child: Text('Add friend'),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                     
+                                      SizedBox(width: 8),
+                                      Text('Add friend'),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

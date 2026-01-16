@@ -3,12 +3,24 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'stories_page.dart';
 import 'main_feed.dart';
 import 'login_page.dart';
+import 'people_page.dart';
+import 'notification.dart';
+import 'people_page.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
-class FacebookPage extends StatelessWidget {
+class FacebookPage extends StatefulWidget {
   const FacebookPage({super.key});
 
   @override
+  State<FacebookPage> createState() => _FacebookPageState();
+}
+
+class _FacebookPageState extends State<FacebookPage> {
+  int _selectedTab = 0; // 0: home, 1: people, 2: notifications
+
+  @override
   Widget build(BuildContext context) {
+    final currentUser = firebase_auth.FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -21,54 +33,77 @@ class FacebookPage extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
         title: const Text('facebook'),
-        //actions: <>{},
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.search, size: 32), // use Icon() widget
+            icon: const Icon(Icons.search, size: 32),
             onPressed: () {
-              // Add your action here
               print("Search pressed");
             },
           ),
           IconButton(
-            icon: const Icon(Icons.menu, size: 32), // use Icon() widget
+            icon: const Icon(Icons.menu, size: 32),
             onPressed: () {
-              // Add your action here
               print("Menu pressed");
             },
-
           ),
-          IconButton(
-            icon: const Icon(Icons.login, size: 32), // use Icon() widget
-            onPressed: () {
-              // Add your action here
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()));
-            },
-            
-          ),
+          currentUser == null
+              ? IconButton(
+                  icon: const Icon(Icons.login, size: 32),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                    );
+                  },
+                )
+              : IconButton(
+                  icon: const Icon(Icons.logout, size: 32),
+                  onPressed: () async {
+                    await firebase_auth.FirebaseAuth.instance.signOut();
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(const SnackBar(content: Text('Logged out')));
+                    setState(() {});
+                  },
+                ),
         ],
       ),
-      // ...existing code...
-      // ...existing code...
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
+          // Icon container (tab bar)
           Container(
             color: Colors.white,
             height: 50,
-
-            //padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 IconButton(
-                  icon: Icon(Icons.home, size: 30, color: Colors.blueGrey),
-                  onPressed: () => {print("navigate to home page ")},
+                  icon: Icon(
+                    Icons.home,
+                    size: 30,
+                    color: _selectedTab == 0 ? Colors.blue : Colors.blueGrey,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _selectedTab = 0;
+                    });
+                  },
                 ),
                 IconButton(
-                  icon: Icon(Icons.people, size: 30, color: Colors.blueGrey),
-                  onPressed: () => {print("")},
+                  icon: Icon(
+                    Icons.people,
+                    size: 30,
+                    color: _selectedTab == 1 ? Colors.blue : Colors.blueGrey,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _selectedTab = 1;
+                    });
+                  },
                 ),
                 IconButton(
                   icon: Icon(
@@ -76,7 +111,7 @@ class FacebookPage extends StatelessWidget {
                     size: 30,
                     color: Colors.blueGrey,
                   ),
-                  onPressed: () => {print("")},
+                  onPressed: () {},
                 ),
                 IconButton(
                   icon: Icon(
@@ -87,99 +122,43 @@ class FacebookPage extends StatelessWidget {
                   onPressed: () {},
                 ),
                 IconButton(
-                  icon: Icon(Icons.notifications),
-                  color: Colors.blueGrey,
-                  hoverColor: Colors.blue.withOpacity(0.12),
-                  onPressed: () {},
+                  icon: Icon(
+                    Icons.notifications,
+                    size: 30,
+                    color: _selectedTab == 2 ? Colors.blue : Colors.blueGrey,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _selectedTab = 2;
+                    });
+                  },
                 ),
                 IconButton(
                   icon: const FaIcon(
                     FontAwesomeIcons.shop,
                     color: Colors.blueGrey,
-                  ), // or FontAwesomeIcons.store
-                  onPressed: () {
-                    // TODO: handle tap
-                  },
+                  ),
+                  onPressed: () {},
                 ),
               ],
             ),
           ),
 
-          Container(
-            height: 130,
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(
-                top: BorderSide(color: Colors.grey.shade300, width: 1),
-                bottom: BorderSide(color: Colors.grey.shade300, width: 1),
-              ),
-            ),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              itemCount: 12,
-              itemBuilder: (context, index) {
-                return Container(
-                  width: 80,
-                  margin: const EdgeInsets.only(right: 12),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 68,
-                        height: 68,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 217, 88, 193),
-                            width: 3,
-                          ),
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            // Handle avatar tap
-                            debugPrint('Avatar $index tapped');
-                          },
-                          customBorder: const CircleBorder(),
-                          child: ClipOval(
-                            child: Image.asset(
-                              'asset/images/avatar.jpg',
-                              width: 60,
-                              height: 60,
-                              fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => const Icon(
-                                Icons.account_circle,
-                                color: Colors.blue,
-                                size: 60,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        'User $index',
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+          // Section below the icon container
+          Expanded(
+            child: _selectedTab == 0
+                ? Column(
+                    children: const [
+                      StoriesSection(),
+                      Expanded(child: NewFeedSection()),
                     ],
-                  ),
-                );
-              },
-            ),
+                  )
+                : _selectedTab == 1
+                ? PeoplePage()
+                : NotificationPage(),
           ),
-
-          const StoriesSection(),
-          Expanded(child: NewFeedSection()),
         ],
       ),
-      // ...existing code...
-      // ...existing code...
     );
   }
 }

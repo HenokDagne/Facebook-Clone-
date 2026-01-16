@@ -45,7 +45,6 @@ class _NewFeedSectionState extends State<NewFeedSection> {
   }
 
   // ---------------- Loading Card ----------------
-
   Widget _buildLoadingCard(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),

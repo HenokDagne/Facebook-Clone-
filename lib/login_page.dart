@@ -1,5 +1,11 @@
+// login_page.dart
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'main_feed.dart';
+import 'facebook_page.dart';
+
 import 'signup.dart';
 
 class LoginPage extends StatefulWidget {
@@ -13,8 +19,12 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _passCtrl = TextEditingController();
-  bool _loading = false;
+  bool _loadingEmail = false;
+  bool _loadingGoogle = false;
   bool _obscure = true;
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   void dispose() {
@@ -23,18 +33,83 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  Future<void> _submit() async {
+  Future<void> _signInWithEmail() async {
     if (!_formKey.currentState!.validate()) return;
-    setState(() => _loading = true);
+    setState(() => _loadingEmail = true);
     try {
-      // Simulate network/login delay
-      await Future.delayed(const Duration(seconds: 1));
+      await _auth.signInWithEmailAndPassword(
+        email: _emailCtrl.text.trim(),
+        password: _passCtrl.text.trim(),
+      ); // standard email/password login with FirebaseAuth. [web:4]
+
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Logged in as ${_emailCtrl.text}')),
+        SnackBar(content: Text('Logged in as ${_emailCtrl.text.trim()}')),
       );
-      // TODO: Replace with real auth/navigation
+      // TODO: Navigate to home screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const FacebookPage()),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.message ?? 'Login failed')));
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Something went wrong')));
     } finally {
-      if (mounted) setState(() => _loading = false);
+      if (mounted) setState(() => _loadingEmail = false);
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    setState(() => _loadingGoogle = true);
+    try {
+      // Start Google sign‑in flow. [web:6][web:12]
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        if (mounted) setState(() => _loadingGoogle = false);
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      ); // Convert Google token to Firebase credential. [web:6]
+
+      await _auth.signInWithCredential(
+        credential,
+      ); // Firebase Google login. [web:6][web:12]
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Logged in as ${googleUser.email}')),
+      );
+      // TODO: Navigate to home screen
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const FacebookPage()),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message ?? 'Google sign-in failed')),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Google sign-in error')));
+    } finally {
+      if (mounted) setState(() => _loadingGoogle = false);
     }
   }
 
@@ -52,7 +127,6 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Title / logo
                 const Text(
                   'facebook',
                   style: TextStyle(
@@ -63,7 +137,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 32),
-
                 // Login card
                 ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: cardWidth),
@@ -79,7 +152,6 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            // Email/phone field — use a filled, borderless input
                             Container(
                               margin: const EdgeInsets.only(bottom: 12),
                               decoration: BoxDecoration(
@@ -89,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.06),
                                     blurRadius: 2,
-                                    offset: Offset(0, 1),
+                                    offset: const Offset(0, 1),
                                   ),
                                 ],
                               ),
@@ -119,14 +191,14 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 validator: (v) {
-                                  if (v == null || v.isEmpty)
+                                  if (v == null || v.isEmpty) {
                                     return 'Enter email or phone';
+                                  }
                                   return null;
                                 },
                               ),
                             ),
                             const SizedBox(height: 12),
-                            // Password field — also borderless and filled.
                             Container(
                               margin: const EdgeInsets.only(bottom: 12),
                               decoration: BoxDecoration(
@@ -136,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.06),
                                     blurRadius: 2,
-                                    offset: Offset(0, 1),
+                                    offset: const Offset(0, 1),
                                   ),
                                 ],
                               ),
@@ -175,144 +247,123 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 validator: (v) {
-                                  if (v == null || v.isEmpty)
+                                  if (v == null || v.isEmpty) {
                                     return 'Enter your password';
+                                  }
                                   return null;
                                 },
                               ),
                             ),
                             const SizedBox(height: 16),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF1877F2),
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 14,
+                            const SizedBox(height: 18),
+                            ConstrainedBox(
+  constraints: BoxConstraints(maxWidth: cardWidth),
+  child: Padding(
+    padding: const EdgeInsets.all(12),
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8), // Rounded corners
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 6,
+            offset: Offset(0, 2),
+          ),
+        ],
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: EdgeInsets.symmetric(vertical: 12),
+          side: BorderSide.none, // Border handled by Container
+        ),
+        onPressed: _loadingGoogle || _loadingEmail
+            ? null
+            : _signInWithGoogle,
+        child: _loadingGoogle
+            ? const SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    height: 24,
+                    width: 24,
+                    margin: const EdgeInsets.only(left: 8, right: 12),
+                    child: Image.asset(
+                      'asset/images/google.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  const Text(
+                    'Sign in with Google',
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+      ),
+    ),
+  ),
+),
+                            const SizedBox(height: 18),
+                            ConstrainedBox(
+                              constraints: BoxConstraints(maxWidth: cardWidth),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  foregroundColor: Colors.black,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 14,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  elevation: 4,
                                 ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const SignupPage(),
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  'Create New Account',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
-                              onPressed: _loading ? null : _submit,
-                              child: _loading
-                                  ? const SizedBox(
-                                      height: 18,
-                                      width: 18,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : const Text(
-                                      'Log In',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
                             ),
-                            const SizedBox(height: 10),
-                            TextButton(
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Forgot password?'),
-                                  ),
-                                );
-                              },
-                              child: const Text(
-                                'Forgotten password?',
-                                style: TextStyle(color: Color(0xFF1877F2)),
+                            const SizedBox(height: 12),
+                            ConstrainedBox(
+                              constraints: BoxConstraints(maxWidth: cardWidth),
+                              child: TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  'Create a Page for a celebrity, band or business.',
+                                  style: TextStyle(color: Colors.white70),
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 18),
-
-                // Third-party sign-in buttons (Google / Apple)
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: cardWidth),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.black,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-                          ),
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Continue with Google')),
-                            );
-                          },
-                          icon: const FaIcon(FontAwesomeIcons.google, color: Colors.red, size: 18),
-                          label: const Text('Google'),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-                          ),
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Sign in with Apple')),
-                            );
-                          },
-                          icon: const FaIcon(FontAwesomeIcons.apple, size: 18),
-                          label: const Text('Apple'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 18),
-
-                // Create account button
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: cardWidth),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      elevation: 4,
-                    ),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const SignupPage()));
-                    },
-                    child: const Text(
-                      'Create New Account',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 12),
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: cardWidth),
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'Create a Page for a celebrity, band or business.',
-                      style: TextStyle(color: Colors.white70),
                     ),
                   ),
                 ),
