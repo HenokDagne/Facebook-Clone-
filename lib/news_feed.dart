@@ -2,6 +2,8 @@
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'news_api_handler.dart';
 
 class NewsFeed {
   final String title;
@@ -39,29 +41,30 @@ class NewsFeed {
     );
   }
 
+  // Factory for NewsAPI.org response
+  factory NewsFeed.fromNewsApiJson(Map<String, dynamic> json) {
+    return NewsFeed(
+      title: json['title']?.toString() ?? '',
+      content: json['description']?.toString() ?? '',
+      author: json['author']?.toString() ?? '',
+      profileImageUrl: json['urlToImage']?.toString() ?? '',
+      username: json['source']?['name']?.toString() ?? '',
+      category: '',
+      imageUrl: json['urlToImage']?.toString() ?? '',
+      publishDate: json['publishedAt']?.toString() ?? '',
+    );
+  }
+
   static Future<List<NewsFeed>> loadNewsFeed() async {
+    // Fetch from NewsApiHandler (remote API)
     try {
-      final String response = await rootBundle.loadString('asset/news.json');
-      final decoded = json.decode(response);
-
-      // Expecting: { "news": [ ... ] }
-      if (decoded is! Map<String, dynamic>) {
-        debugPrint('news.json root is not a Map');
-        return [];
-      }
-
-      final list = decoded['news'];
-      if (list is! List) {
-        debugPrint('news.json["news"] is not a List');
-        return [];
-      }
-
-      return list
-          .where((e) => e is Map<String, dynamic>)
-          .map((e) => NewsFeed.fromJson(e as Map<String, dynamic>))
-          .toList();
+      // ignore: import_of_legacy_library_into_null_safe
+      // ignore: unused_import
+      
+      // ignore: undefined_function
+      return await NewsApiHandler.fetchNews();
     } catch (e) {
-      debugPrint('Error reading news feed: $e');
+      debugPrint('Error fetching news feed from API: $e');
       return [];
     }
   }

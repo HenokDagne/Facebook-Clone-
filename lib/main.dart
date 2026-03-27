@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'facebook_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
-void main () async {
- WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
-runApp(const MyApp());
+import 'login_page.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -64,15 +62,27 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(seconds: 3), () {
-        if (!mounted) return;
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const FacebookPage()),
-        );
-      });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(seconds: 3));
+      if (!mounted) return;
+      // Check user authentication status
+      final isLoggedIn = await _isUserLoggedIn();
+      if (!mounted) return;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => isLoggedIn ? const FacebookPage() : const LoginPage(),
+        ),
+      );
     });
+  }
+
+  Future<bool> _isUserLoggedIn() async {
+    // TODO: Replace with your actual authentication check logic
+    // Example for Firebase Auth:
+    // import 'package:firebase_auth/firebase_auth.dart';
+    // return FirebaseAuth.instance.currentUser != null;
+    return false; // Default: not logged in
   }
 
   @override
