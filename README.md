@@ -13,7 +13,11 @@ This project replicates core features of Facebook, including:
 - People/Contacts
 - Profile Pages
 
-## 📸 Screenshots
+## 📸 Screenshots & Demo
+
+Watch the demo video:
+
+[![Demo Video](https://img.youtube.com/vi/h_Qt7FwxamU/0.jpg)](https://youtube.com/shorts/h_Qt7FwxamU?feature=share)
 
 <!-- Add screenshots or demo GIFs here -->
 

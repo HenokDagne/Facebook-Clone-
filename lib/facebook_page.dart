@@ -17,6 +17,8 @@ class FacebookPage extends StatefulWidget {
 
 class _FacebookPageState extends State<FacebookPage> {
   int _selectedTab = 0; // 0: home, 1: people, 2: notifications
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +38,9 @@ class _FacebookPageState extends State<FacebookPage> {
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.search, size: 32),
-            onPressed: () {
-              print("Search pressed");
-            },
+            onPressed: () {},
           ),
-          IconButton(
-            icon: const Icon(Icons.menu, size: 32),
-            onPressed: () {
-              print("Menu pressed");
-            },
-          ),
+          IconButton(icon: const Icon(Icons.menu, size: 32), onPressed: () {}),
           currentUser == null
               ? IconButton(
                   icon: const Icon(Icons.login, size: 32),
@@ -144,13 +139,40 @@ class _FacebookPageState extends State<FacebookPage> {
             ),
           ),
 
+          // Search bar above StoriesSection
+          if (_selectedTab == 0)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search news by title...',
+                  prefixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 0,
+                    horizontal: 12,
+                  ),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value;
+                  });
+                },
+              ),
+            ),
+
           // Section below the icon container
           Expanded(
             child: _selectedTab == 0
                 ? Column(
-                    children: const [
-                      StoriesSection(),
-                      Expanded(child: NewFeedSection()),
+                    children: [
+                      const StoriesSection(),
+                      Expanded(
+                        child: NewFeedSection(searchQuery: _searchQuery),
+                      ),
                     ],
                   )
                 : _selectedTab == 1

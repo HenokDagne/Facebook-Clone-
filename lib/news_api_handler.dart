@@ -4,7 +4,7 @@ import 'news_feed.dart';
 
 class NewsApiHandler {
   static const String _apiUrl =
-      'https://newsapi.org/v2/everything?q=tesla&from=2026-02-27&sortBy=publishedAt&apiKey=8576a3c9b8d44a85b75a65ffbb64105a';
+      'https://newsapi.org/v2/everything?q=tesla&from=2026-03-05&sortBy=publishedAt&apiKey=8f20728ec62947848f2ecbab87f0e752';
 
   static Future<List<NewsFeed>> fetchNews() async {
     try {

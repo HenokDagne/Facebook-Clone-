@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'news_feed.dart';
 
 class NewFeedSection extends StatefulWidget {
-  const NewFeedSection({super.key});
+  final String searchQuery;
+  const NewFeedSection({super.key, this.searchQuery = ''});
 
   @override
   State<NewFeedSection> createState() => _NewFeedSectionState();
@@ -11,6 +12,7 @@ class NewFeedSection extends StatefulWidget {
 
 class _NewFeedSectionState extends State<NewFeedSection> {
   List<NewsFeed> news = [];
+  List<NewsFeed> filteredNews = [];
   bool isLoading = true;
   final Map<int, bool> _expanded = {}; // index → expanded?
 
@@ -25,8 +27,32 @@ class _NewFeedSectionState extends State<NewFeedSection> {
     final newsList = await NewsFeed.loadNewsFeed();
     setState(() {
       news = newsList;
+      _filterNews();
       isLoading = false;
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant NewFeedSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.searchQuery != widget.searchQuery) {
+      _filterNews();
+    }
+  }
+
+  void _filterNews() {
+    if (widget.searchQuery.isEmpty) {
+      filteredNews = List.from(news);
+    } else {
+      filteredNews = news
+          .where(
+            (n) => n.title.toLowerCase().contains(
+              widget.searchQuery.toLowerCase(),
+            ),
+          )
+          .toList();
+    }
+    setState(() {});
   }
 
   @override
@@ -35,10 +61,10 @@ class _NewFeedSectionState extends State<NewFeedSection> {
       color: const Color(0xFFF0F2F5),
       child: ListView.builder(
         padding: const EdgeInsets.fromLTRB(12, 8, 12, 100),
-        itemCount: isLoading ? 1 : news.length,
+        itemCount: isLoading ? 1 : filteredNews.length,
         itemBuilder: (context, index) {
           if (isLoading) return _buildLoadingCard(context);
-          return _buildNewsCard(news[index], index);
+          return _buildNewsCard(filteredNews[index], index);
         },
       ),
     );
